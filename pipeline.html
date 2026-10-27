@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#E8A500" />
+    <title>The Academy Journey</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="pipeline.css" />
+    <link rel="stylesheet" href="motion.css" />
+  </head>
+  <body class="journey-page">
+    <main class="board">
+
+      <header class="board-head">
+        <a class="board-brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36"><path d="M10.3 13.6c0-4.1 3.3-7.4 7.4-7.4s7.4 3.3 7.4 7.4v8.8c0 4.1-3.3 7.4-7.4 7.4s-7.4-3.3-7.4-7.4v-8.8Z" /><path class="bee-stripe" d="M11.1 14.9h13.2M10.4 20h14.6M11.1 25.1h13.2" /><path class="bee-wing" d="M10.6 14.5C6 11.3 2.9 13.9 5.4 18.2c1.2 2 3.2 2.8 5.4 2.7M24.9 14.5c4.6-3.2 7.7-.6 5.2 3.7-1.2 2-3.2 2.8-5.4 2.7" /><path class="bee-eye" d="M15.3 12.8h.1M20 12.8h.1" /></svg>
+          </span>
+          <span class="board-wordmark">humblebee<span class="brand-dot">.</span>ai</span>
+        </a>
+        <h1>The Academy Journey</h1>
+
+        <div class="key" aria-label="Legend">
+          <span><i class="k-dot pass"></i> Pass</span>
+          <span><i class="k-dot fail"></i> Retake</span>
+          <span><i class="k-dot alt"></i> Other track</span>
+          <span><i class="k-dot money"></i> Refund</span>
+        </div>
+
+        <div class="tools">
+          <button type="button" class="tool" id="editToggle" aria-pressed="false">
+            <i class="bi bi-pencil-square"></i> <span id="editLabel">Edit text</span>
+          </button>
+          <span class="tool-group">
+            <button type="button" class="tool icon" id="zoomOut" aria-label="Zoom out"><i class="bi bi-dash-lg"></i></button>
+            <span class="zoom-val" id="zoomVal" role="status" aria-live="polite">100%</span>
+            <button type="button" class="tool icon" id="zoomIn" aria-label="Zoom in"><i class="bi bi-plus-lg"></i></button>
+            <button type="button" class="tool" id="zoomFit">Fit</button>
+          </span>
+        </div>
+      </header>
+
+      <p class="edit-hint" id="editHint" hidden>
+        <i class="bi bi-info-circle"></i>
+        Click any text to change it. Press <kbd>Esc</kbd> to finish, or
+        <button type="button" class="link-btn" id="resetText">restore the original wording</button>.
+      </p>
+
+      <!-- ===== THE CHART ===== -->
+      <div class="chart-wrap" id="chartWrap">
+        <svg class="chart" id="chart" viewBox="0 0 2300 700" role="img" aria-labelledby="ct cd" preserveAspectRatio="xMidYMid meet">
+          <title id="ct">The academy journey, start to finish</title>
+          <desc id="cd">Six intake sources feed PRE (Python, 2 months). An exam follows: passing goes to EF and refunds PRE tuition; failing either repeats PRE or switches to Web Development, which can rejoin at EF. A second exam follows EF: passing goes to SL and refunds EF tuition; failing repeats EF. SL leads to FO and then G3 with no further exams.</desc>
+
+          <defs>
+            <marker id="aMain" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#17150f" />
+            </marker>
+            <marker id="aPass" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#35704a" />
+            </marker>
+            <marker id="aFail" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#c2410c" />
+            </marker>
+            <marker id="aPoint" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#7a3f9d" />
+            </marker>
+            <marker id="aReloc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#35704a" />
+            </marker>
+            <marker id="aAlt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="#3d6a84" />
+            </marker>
+          </defs>
+
+          <!-- ================= INTAKE ================= -->
+          <text class="zone" x="24" y="34">INTAKE</text>
+
+          <!-- Outer container rectangle enclosing all intake cards -->
+          <rect class="intake-frame" x="12" y="46" width="628" height="540" rx="16" />
+
+          <!-- Left column cards -->
+          <g class="src">
+            <rect x="22" y="60" width="294" height="70" rx="9" />
+            <circle class="src-d" cx="40" cy="78" r="4" />
+            <text class="src-t" x="56" y="82" data-edit>HACKATHONS &#38; OLYMPIADS</text>
+            <text class="src-s" x="56" y="104" data-edit>A hackathon every 2&#8211;3 months, plus</text>
+            <text class="src-s" x="56" y="120" data-edit>science and technology olympiads</text>
+          </g>
+
+          <g class="src">
+            <rect x="22" y="144" width="294" height="70" rx="9" />
+            <circle class="src-d" cx="40" cy="162" r="4" />
+            <text class="src-t" x="56" y="166" data-edit>CORPORATE &#38; B2B</text>
+            <text class="src-s" x="56" y="188" data-edit>IT companies, BANKS and enterprises</text>
+            <text class="src-s" x="56" y="204" data-edit>send their staff for AI reskilling</text>
+          </g>
+
+          <g class="src">
+            <rect x="22" y="228" width="294" height="86" rx="9" />
+            <circle class="src-d" cx="40" cy="246" r="4" />
+            <text class="src-t" x="56" y="250" data-edit>WORD OF MOUTH</text>
+            <text class="src-s" x="56" y="272" data-edit>Referral: bring a friend who is</text>
+            <text class="src-s" x="56" y="288" data-edit>curious about coding. School computer-</text>
+            <text class="src-s" x="56" y="304" data-edit>science teachers refer their students</text>
+          </g>
+
+          <g class="src">
+            <rect x="22" y="328" width="294" height="246" rx="9" />
+            <circle class="src-d" cx="40" cy="346" r="4" />
+            <text class="src-t" x="56" y="350" data-edit>STARTUP INCUBATION</text>
+            <text class="src-s" x="56" y="372" data-edit>Web development and AI students build small,</text>
+            <text class="src-s" x="56" y="388" data-edit>working projects. We take the credible ones and</text>
+            <text class="src-s" x="56" y="404" data-edit>raise them into real startups: funding, venture</text>
+            <text class="src-s" x="56" y="420" data-edit>competitions, and outside capital that offsets</text>
+            <text class="src-s" x="56" y="436" data-edit>part of the academy&#8217;s running costs.</text>
+            <text class="src-s" x="56" y="460" data-edit>Every funded project answers the question a</text>
+            <text class="src-s" x="56" y="476" data-edit>parent always asks: what did people who studied</text>
+            <text class="src-s" x="56" y="492" data-edit>here actually build?</text>
+            <text class="src-s" x="56" y="516" data-edit>At venture events we meet other founders. Those</text>
+            <text class="src-s" x="56" y="532" data-edit>whose philosophy fits Humblebee we approach,</text>
+            <text class="src-s" x="56" y="548" data-edit>and make an individual offer to their strongest</text>
+            <text class="src-s" x="56" y="564" data-edit>engineer.</text>
+          </g>
+
+          <!-- Right column cards -->
+          <g class="src">
+            <rect x="334" y="60" width="294" height="70" rx="9" />
+            <circle class="src-d" cx="352" cy="78" r="4" />
+            <text class="src-t" x="368" y="82" data-edit>ORGANIC SOCIAL</text>
+            <text class="src-s" x="368" y="104" data-edit>Instagram, Telegram, YouTube</text>
+            <text class="src-s" x="368" y="120" data-edit>What we already do and have</text>
+          </g>
+
+          <g class="src aggro">
+            <rect x="334" y="144" width="294" height="246" rx="9" />
+            <circle class="src-d" cx="352" cy="162" r="4" />
+            <text class="src-t" x="368" y="166" data-edit>AGGRESSIVE MARKETING</text>
+            <text class="src-s" x="368" y="188" data-edit>Most IT academies here sell courses, not</text>
+            <text class="src-s" x="368" y="204" data-edit>outcomes. A student spends two years and</text>
+            <text class="src-s" x="368" y="220" data-edit>leaves believing that is what programming</text>
+            <text class="src-s" x="368" y="236" data-edit>is &#8212; and that weak version of the job is</text>
+            <text class="src-s" x="368" y="252" data-edit>exactly the part AI is replacing first.</text>
+            <text class="src-s" x="368" y="276" data-edit>So we talk about the problem, never about</text>
+            <text class="src-s" x="368" y="292" data-edit>names. We show what real engineering work</text>
+            <text class="src-s" x="368" y="308" data-edit>looks like, why shallow coding no longer</text>
+            <text class="src-s" x="368" y="324" data-edit>sells, and how to tell a serious programme</text>
+            <text class="src-s" x="368" y="340" data-edit>from a packaged one.</text>
+            <text class="src-s" x="368" y="364" data-edit>The message to a burned student: do not</text>
+            <text class="src-s" x="368" y="380" data-edit>judge the field by what you were sold.</text>
+          </g>
+
+          <g class="src">
+            <rect x="334" y="404" width="294" height="166" rx="9" />
+            <circle class="src-d" cx="352" cy="422" r="4" />
+            <text class="src-t" x="368" y="426" data-edit>PARTNER EVENTS</text>
+            <text class="src-s" x="368" y="448" data-edit>IELTS, SAT, IT, Maths and Physics</text>
+            <text class="src-s" x="368" y="464" data-edit>education centres, private schools</text>
+            <text class="src-s" x="368" y="480" data-edit>and universities &#8212; to organise:</text>
+            <text class="src-s" x="368" y="496" data-edit>Memorandum of partnership</text>
+            <text class="src-s" x="368" y="512" data-edit>At least 1 event every month at</text>
+            <text class="src-s" x="368" y="528" data-edit>their venue: talks, seminars and</text>
+            <text class="src-s" x="368" y="544" data-edit>meetups with their students</text>
+            <text class="src-s" x="368" y="560" data-edit>Mainly Andijan, Namangan, Tashkent</text>
+          </g>
+
+          <!-- Exactly 1 single arrow from the Intake container to PREPARATION -->
+          <path class="e-main" d="M640 281 H674" marker-end="url(#aMain)" />
+
+          <!-- ================= PRE ================= -->
+          <text class="zone" x="674" y="34">FOUNDATION</text>
+          <g class="stage">
+            <rect x="674" y="195" width="240" height="172" rx="14" />
+            <text class="s-head" x="794" y="236" data-edit>PREPARATION</text>
+            <text class="s-name" x="794" y="266" data-edit>PYTHON</text>
+            <text class="s-name" x="794" y="286" data-edit>SQLITE3 &#38; ORM</text>
+            <text class="s-name" x="794" y="306" data-edit>GOOGLE SHEETS APPSCRIPT</text>
+            <text class="s-meta" x="794" y="330" data-edit>2 months &#183; 680 000+</text>
+            <text class="s-meta" x="794" y="348" data-edit>Format: online / offline</text>
+          </g>
+
+          <path class="e-main" d="M914 281 H922" marker-end="url(#aMain)" />
+
+          <!-- ================= EXAM 1 ================= -->
+          <g class="gate">
+            <path d="M986 225 L1050 281 L986 337 L922 281 Z" />
+            <text class="g-t" x="986" y="275">EXAM</text>
+            <text class="g-s" x="986" y="293">1</text>
+          </g>
+
+          <path class="e-pass" d="M1050 281 H1186" marker-end="url(#aPass)" />
+          <text class="lbl-pass" x="1118" y="271">PASS</text>
+
+          <path class="e-fail" d="M986 337 V412" />
+          <text class="lbl-fail" x="1002" y="379">FAIL</text>
+          <circle class="node-fail" cx="986" cy="412" r="5" />
+
+          <!-- fail -> repeat PRE -->
+          <path class="e-fail" d="M986 412 H794 V367" marker-end="url(#aFail)" />
+          <text class="lbl-sm fail" x="872" y="404" data-edit>retake</text>
+
+          <!-- fail -> web dev -->
+          <path class="e-alt" d="M986 412 V486" marker-end="url(#aAlt)" />
+          <g class="alt-box">
+            <rect x="896" y="490" width="180" height="82" rx="12" />
+            <text class="a-t" x="986" y="518" data-edit>WEB DEVELOPMENT</text>
+            <text class="a-s" x="986" y="538" data-edit>Vue JS &#183; Django</text>
+            <text class="a-s" x="986" y="556" data-edit>Fast API</text>
+          </g>
+
+          <path class="e-alt" d="M1076 531 H1240 V355" marker-end="url(#aAlt)" />
+          <text class="lbl-sm alt" x="1147" y="523" data-edit>rejoin later</text>
+
+          <!-- refund 1 — a result of passing, not a step to walk back -->
+          <path class="e-money" d="M986 225 V190" />
+          <g class="money-tag">
+            <rect x="874" y="146" width="224" height="44" rx="22" />
+            <circle class="money-bubble" cx="986" cy="200" r="5" />
+            <text class="money-amt" x="986" y="168" data-edit>PRE tuition refunded 100%</text>
+            <text class="money-sub" x="986" y="183" data-edit>when you pass the exam</text>
+          </g>
+
+          <!-- ================= EF ================= -->
+          <text class="zone" x="1186" y="34">CORE SKILLS</text>
+          <g class="stage">
+            <rect x="1186" y="207" width="212" height="148" rx="14" />
+            <text class="s-head" x="1292" y="256" data-edit>ENGINEERING</text>
+            <text class="s-head" x="1292" y="282" data-edit>FUNDAMENTALS</text>
+            <text class="s-name" x="1292" y="310" data-edit>Terminal &#183; Git</text>
+            <text class="s-name" x="1292" y="328" data-edit>Math for AI</text>
+            <text class="s-name" x="1292" y="348" data-edit>NumPy &#183; Pandas &#183; SQL</text>
+          </g>
+
+          <path class="e-main" d="M1398 281 H1426" marker-end="url(#aMain)" />
+
+          <!-- ================= EXAM 2 ================= -->
+          <g class="gate">
+            <path d="M1498 225 L1562 281 L1498 337 L1434 281 Z" />
+            <text class="g-t" x="1498" y="275">EXAM</text>
+            <text class="g-s" x="1498" y="293">2</text>
+          </g>
+
+          <path class="e-pass" d="M1562 281 H1686" marker-end="url(#aPass)" />
+          <text class="lbl-pass" x="1630" y="271">PASS</text>
+
+          <path class="e-fail" d="M1498 337 V412 H1310 V355" marker-end="url(#aFail)" />
+          <text class="lbl-fail" x="1514" y="379">FAIL</text>
+          <text class="lbl-sm fail" x="1384" y="404" data-edit>retake</text>
+
+          <!-- refund 2 — a result of passing, not a step to walk back -->
+          <path class="e-money" d="M1498 225 V190" />
+          <g class="money-tag">
+            <rect x="1386" y="146" width="224" height="44" rx="22" />
+            <circle class="money-bubble" cx="1498" cy="200" r="5" />
+            <text class="money-amt" x="1498" y="168" data-edit>EF tuition refunded 100%</text>
+            <text class="money-sub" x="1498" y="183" data-edit>when you pass the exam</text>
+          </g>
+
+          <!-- ================= BUILD ================= -->
+          <text class="zone" x="1686" y="34">BUILD &#38; EARN</text>
+
+          <!-- relocation: unlocked by passing the EF exam -->
+          <path class="e-reloc" d="M1630 281 V130 H1686" marker-end="url(#aReloc)" />
+
+          <g class="reloc">
+            <rect x="1686" y="74" width="252" height="118" rx="12" />
+            <text class="rl-t" x="1706" y="102" data-edit>RELOCATION TO KOREA</text>
+            <text class="rl-c" x="1706" y="120" data-edit>For those who complete Engineering</text>
+            <text class="rl-c" x="1706" y="134" data-edit>Fundamentals and pass the exam:</text>
+            <text class="rl-s" x="1706" y="154" data-edit>students in Uzbekistan get hands-on</text>
+            <text class="rl-s" x="1706" y="168" data-edit>support relocating to South Korea.</text>
+            <text class="rl-s" x="1706" y="182" data-edit>Practical help, start to finish.</text>
+          </g>
+
+          <g class="stage">
+            <rect x="1686" y="238" width="252" height="94" rx="12" />
+            <text class="s-title" x="1706" y="264" data-edit>SOFT LANDING</text>
+            <text class="s-sub" x="1706" y="283" data-edit>6 months &#183; engineering practice</text>
+            <text class="s-body" x="1706" y="303" data-edit>Real systems, AI/ML foundations and</text>
+            <text class="s-body" x="1706" y="317" data-edit>teamwork skills</text>
+          </g>
+          <path class="e-main" d="M1812 332 V352" marker-end="url(#aMain)" />
+
+          <g class="stage">
+            <rect x="1686" y="356" width="252" height="94" rx="12" />
+            <text class="s-title" x="1706" y="382" data-edit>FOUNDATION</text>
+            <text class="s-sub" x="1706" y="401" data-edit>6 months &#183; deep specialisation</text>
+            <text class="s-body" x="1706" y="421" data-edit>Computer Vision &#183; NLP &#183;</text>
+            <text class="s-body" x="1706" y="435" data-edit>AI Systems Engineering</text>
+          </g>
+          <path class="e-main" d="M1812 450 V470" marker-end="url(#aMain)" />
+
+          <g class="stage">
+            <rect x="1686" y="474" width="252" height="104" rx="14" />
+            <text class="s-title" x="1706" y="503" data-edit>GROWTH 3</text>
+            <text class="s-sub" x="1706" y="522" data-edit>Professional stage</text>
+            <text class="s-body" x="1706" y="543" data-edit>Work inside real engineering teams,</text>
+            <text class="s-body" x="1706" y="557" data-edit>mentorship and job offers</text>
+          </g>
+
+          <!-- ================= POINT B ================= -->
+          <text class="zone" x="2036" y="34">POINT B</text>
+
+          <path class="e-point" d="M1938 285 H2000 V390" />
+          <path class="e-point" d="M1938 403 H2000" />
+          <path class="e-point" d="M1938 526 H2000 V390" />
+          <path class="e-point" d="M2000 390 H2036" marker-end="url(#aPoint)" />
+
+          <g class="point-b">
+            <rect x="2036" y="268" width="232" height="244" rx="16" />
+            <text class="pb-title" x="2152" y="316">POINT B</text>
+            <text class="pb-sub" x="2152" y="342" data-edit>The destination</text>
+
+            <rect class="pb-badge" x="2056" y="358" width="192" height="52" rx="10" />
+            <text class="pb-guar" x="2152" y="380" data-edit>100% GUARANTEE</text>
+            <text class="pb-guar-s" x="2152" y="398" data-edit>of employment</text>
+
+            <text class="pb-body" x="2152" y="434" data-edit>A world-class engineer with</text>
+            <text class="pb-body" x="2152" y="452" data-edit>real income and a portfolio</text>
+            <text class="pb-body" x="2152" y="478" data-edit>Job offers &#183; international</text>
+            <text class="pb-body" x="2152" y="496" data-edit>partners &#183; your own startup</text>
+          </g>
+        </svg>
+      </div>
+    </main>
+
+    <script src="pipeline.js"></script>
+    <script src="motion.js"></script>
+  </body>
+</html>

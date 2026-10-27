@@ -1,0 +1,248 @@
+/* =========================================================
+   Windows Phone / Lumia motion
+
+   Timings, angles and easings are taken from Microsoft's own
+   Silverlight Toolkit storyboards (Ms-PL), converted to CSS:
+
+     SwivelForwardOut    RotationX 0 -> 90deg, 250ms, ExponentialEase EaseIn Exponent=15
+     SwivelForwardIn     RotationX -45 -> 0,   350ms, ExponentialEase EaseOut Exponent=6
+     TurnstileForwardOut RotationY 0 -> 50deg, 250ms, EaseIn Exponent=6,
+                         CenterOfRotationX = 0 (hinges on the left edge)
+
+   ExponentialEase has no cubic-bezier equivalent, so each curve is
+   sampled into a CSS linear() function at 18 steps.
+   ========================================================= */
+:root {
+  /* ExponentialEase EaseOut, Exponent 6 — the Metro arrival curve */
+  --wp-ease-out: linear(
+    0, 0.2842, 0.4878, 0.6337, 0.7382, 0.8131, 0.8668, 0.9053, 0.9328,
+    0.9526, 0.9667, 0.9769, 0.9841, 0.9893, 0.9931, 0.9957, 0.9976, 0.999, 1
+  );
+
+  /* ExponentialEase EaseIn, Exponent 6 — turnstile departure */
+  --wp-ease-in: linear(
+    0, 0.001, 0.0024, 0.0043, 0.0069, 0.0107, 0.0159, 0.0231, 0.0333,
+    0.0474, 0.0672, 0.0947, 0.1332, 0.1869, 0.2618, 0.3663, 0.5122, 0.7158, 1
+  );
+
+  /* ExponentialEase EaseIn, Exponent 15 — swivel departure: holds, then snaps */
+  --wp-ease-in-hard: linear(
+    0, 0, 0, 0, 0, 0, 0, 0.0001, 0.0002, 0.0006, 0.0013, 0.0029, 0.0067,
+    0.0155, 0.0357, 0.0821, 0.1889, 0.4346, 1
+  );
+
+  --wp-out: 250ms;   /* every Metro exit */
+  --wp-in: 350ms;    /* every Metro entrance */
+}
+
+/* =========================================================
+   1. ENTRANCE — SwivelForwardIn
+   Content tips up from -45deg. Perspective lives on the container
+   so sibling tiles share one vanishing point.
+   ========================================================= */
+.app-shell,
+.board,
+.pre-main,
+.menu-grid,
+.weeks {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+@keyframes wp-swivel-in {
+  from {
+    opacity: 0;
+    transform: rotateX(-45deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Feathered entrance: each item follows the one before it,
+   staggered ~50ms as the toolkit does. */
+[data-enter] {
+  animation: wp-swivel-in var(--wp-in) var(--wp-ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 50ms);
+  transform-origin: 50% 50%;
+}
+
+/* =========================================================
+   2. CONTINUUM — the tapped tile flies forward, the rest turnstile away
+
+   The signature Lumia transition. Three things happen at once:
+     - the chosen tile scales toward the viewer and fades out
+     - every other tile hinges away on its left edge
+     - surrounding chrome swivels down and out
+   ========================================================= */
+
+/* the tile the user chose */
+@keyframes wp-continuum-hero {
+  from {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+  55% {
+    opacity: .9;
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.4) translateZ(220px);
+  }
+}
+
+.wp-continuum-hero {
+  position: relative;
+  z-index: 30;
+  animation: wp-continuum-hero 400ms var(--wp-ease-in-hard) forwards;
+  will-change: transform, opacity;
+}
+
+/* every other tile — TurnstileForwardOut, hinged on the left edge */
+@keyframes wp-turnstile-out {
+  from {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  96% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: rotateY(50deg);
+  }
+}
+
+.wp-turnstile-out {
+  /* CenterOfRotationX = 0 in the toolkit: the hinge is the left edge */
+  transform-origin: 0% 50%;
+  animation: wp-turnstile-out var(--wp-out) var(--wp-ease-in) forwards;
+  animation-delay: calc(var(--j, 0) * 25ms);
+  will-change: transform, opacity;
+}
+
+/* chrome that is not a tile swivels away — SwivelForwardOut */
+@keyframes wp-swivel-out {
+  from {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+  96% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: rotateX(90deg);
+  }
+}
+
+.wp-swivel-out {
+  transform-origin: 50% 0%;
+  animation: wp-swivel-out var(--wp-out) var(--wp-ease-in-hard) forwards;
+  will-change: transform, opacity;
+}
+
+/* the page stops accepting input while it leaves */
+.wp-leaving {
+  pointer-events: none;
+}
+
+/* =========================================================
+   3. THE TILT — pressing a tile pushes it back from the finger
+   ========================================================= */
+.menu-card,
+.cta-link,
+.back-link,
+.tool,
+.stack-list li {
+  transform-origin: center;
+  transition:
+    transform 140ms var(--wp-ease-out),
+    box-shadow 160ms var(--wp-ease-out),
+    border-color 160ms linear,
+    opacity 160ms linear;
+}
+
+.menu-card {
+  will-change: transform;
+}
+
+.menu-card .arrow {
+  transition: transform 160ms var(--wp-ease-out);
+}
+
+/* centre press: straight back */
+.menu-card:active {
+  transform: perspective(700px) scale(.97) translateZ(-10px);
+}
+
+/* edge press: the tile pivots away from wherever the finger landed —
+   the detail that made Lumia tiles feel like physical objects */
+.menu-card[data-press="left"]:active {
+  transform: perspective(700px) scale(.98) rotateY(4deg);
+}
+
+.menu-card[data-press="right"]:active {
+  transform: perspective(700px) scale(.98) rotateY(-4deg);
+}
+
+.menu-card[data-press="top"]:active {
+  transform: perspective(700px) scale(.98) rotateX(-4deg);
+}
+
+.menu-card[data-press="bottom"]:active {
+  transform: perspective(700px) scale(.98) rotateX(4deg);
+}
+
+.cta-link:active,
+.tool:active {
+  transform: scale(.96);
+}
+
+.back-link:active {
+  transform: translateX(-3px) scale(.97);
+}
+
+/* =========================================================
+   4. FOCUS — a hard rectangle, never a soft glow
+   ========================================================= */
+.menu-card:focus-visible,
+.cta-link:focus-visible,
+.back-link:focus-visible,
+.tool:focus-visible,
+.brand:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   5. REDUCED MOTION
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  [data-enter],
+  .wp-continuum-hero,
+  .wp-turnstile-out,
+  .wp-swivel-out {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .menu-card,
+  .cta-link,
+  .back-link,
+  .tool,
+  .stack-list li,
+  .menu-card .arrow {
+    transition: none;
+  }
+
+  .menu-card:active,
+  .menu-card[data-press]:active,
+  .cta-link:active,
+  .tool:active,
+  .back-link:active {
+    transform: none;
+  }
+}

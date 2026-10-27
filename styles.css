@@ -1,0 +1,374 @@
+:root {
+  --ink: #161616;
+  --muted: #6e6e72;
+  --yellow: #f9c51c;
+  --blue: #b9e8ff;
+  --lilac: #ddd0ff;
+  --mint: #c9f4d9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  color: var(--ink);
+  background: #f7f7f5;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-shell {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 28px clamp(20px, 5vw, 72px) 30px;
+  isolation: isolate;
+}
+
+.ambient {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: .65;
+}
+
+.ambient-one {
+  top: -220px;
+  right: -110px;
+  width: 530px;
+  height: 530px;
+  background: radial-gradient(circle, rgba(249, 197, 28, .24), rgba(249, 197, 28, 0) 68%);
+}
+
+.ambient-two {
+  bottom: -280px;
+  left: -160px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(185, 232, 255, .32), rgba(185, 232, 255, 0) 68%);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 760;
+  letter-spacing: -.04em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--yellow);
+}
+
+.brand-mark svg {
+  width: 27px;
+  height: 27px;
+  fill: var(--ink);
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.brand-mark .bee-stripe,
+.brand-mark .bee-wing {
+  fill: none;
+}
+
+.brand-mark .bee-eye {
+  fill: none;
+  stroke-width: 3;
+}
+
+.brand-dot {
+  color: #e6a900;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid rgba(22, 22, 22, .08);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, .56);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .02em;
+  backdrop-filter: blur(12px);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #47c778;
+  box-shadow: 0 0 0 3px rgba(71, 199, 120, .14);
+}
+
+.eyebrow,
+.card-kicker {
+  margin: 0 0 14px;
+  color: #8b8b8f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .17em;
+}
+
+.menu-grid {
+  display: grid;
+  width: min(100%, 900px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: center;
+  gap: 15px;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.menu-card {
+  position: relative;
+  display: flex;
+  min-height: 178px;
+  align-items: flex-start;
+  gap: 15px;
+  overflow: hidden;
+  padding: 24px 22px;
+  border: 1px solid rgba(22, 22, 22, .055);
+  border-radius: 25px;
+  color: var(--ink);
+  text-align: left;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.menu-card::after {
+  position: absolute;
+  right: -18px;
+  bottom: -30px;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(22, 22, 22, .09);
+  border-radius: 50%;
+  content: "";
+  opacity: .7;
+}
+
+.menu-card:hover,
+.menu-card:focus-visible {
+  box-shadow: 0 16px 35px rgba(34, 34, 34, .11);
+  outline: none;
+  transform: translateY(-4px);
+}
+
+.menu-card:active {
+  transform: translateY(-1px) scale(.99);
+}
+
+.card-yellow { background: var(--yellow); }
+.card-blue { background: var(--blue); }
+.card-lilac { background: var(--lilac); }
+.card-mint { background: var(--mint); }
+
+.card-icon,
+.modal-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, .53);
+  font-size: 19px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2px;
+}
+
+.card-kicker {
+  margin-bottom: 9px;
+  color: rgba(22, 22, 22, .56);
+  font-size: 9px;
+}
+
+.card-content strong {
+  max-width: 190px;
+  font-size: clamp(20px, 2.3vw, 26px);
+  font-weight: 760;
+  letter-spacing: -.055em;
+  line-height: 1.05;
+}
+
+.card-description {
+  max-width: 230px;
+  margin-top: 10px;
+  color: rgba(22, 22, 22, .63);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.arrow {
+  position: absolute;
+  top: 21px;
+  right: 21px;
+  font-size: 17px;
+  transition: transform .25s ease;
+}
+
+.menu-card:hover .arrow {
+  transform: translate(3px, -3px);
+}
+
+.footer-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 38px;
+  color: #969699;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.footer-line {
+  width: 24px;
+  height: 1px;
+  background: #c7c7c7;
+}
+
+.detail-modal {
+  overflow: hidden;
+  border: 0;
+  border-radius: 27px;
+  background: rgba(255, 255, 255, .9);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, .17);
+  backdrop-filter: blur(20px);
+}
+
+.modal-header {
+  align-items: flex-start;
+  padding: 22px 22px 0;
+  border: 0;
+}
+
+.modal-body {
+  padding: 20px 26px 27px;
+}
+
+.modal-body .eyebrow {
+  margin-bottom: 10px;
+}
+
+.modal-body h2 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 780;
+  letter-spacing: -.07em;
+}
+
+.modal-body p:not(.eyebrow) {
+  margin: 12px 0 22px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.modal-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #f3f3f1;
+  color: #727276;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.modal-action i {
+  color: var(--ink);
+  font-size: 17px;
+}
+
+@media (max-width: 600px) {
+  .app-shell {
+    padding: 20px 16px 23px;
+  }
+
+  .status-pill {
+    padding: 7px 9px;
+    font-size: 9px;
+  }
+
+  .menu-grid {
+    gap: 11px;
+  }
+
+  .menu-card {
+    min-height: 177px;
+    flex-direction: column;
+    gap: 14px;
+    padding: 17px 15px;
+    border-radius: 21px;
+  }
+
+  .card-icon {
+    width: 37px;
+    height: 37px;
+    border-radius: 12px;
+    font-size: 16px;
+  }
+
+  .card-content strong {
+    font-size: 19px;
+  }
+
+  .card-description {
+    font-size: 11px;
+  }
+
+  .arrow {
+    top: 16px;
+    right: 15px;
+  }
+
+  .footer-note {
+    padding-top: 28px;
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-card,
+  .arrow {
+    transition: none;
+  }
+}

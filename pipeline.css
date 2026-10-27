@@ -1,0 +1,680 @@
+/* =========================================================
+   The Academy Journey — one chart, read without reading
+   ========================================================= */
+.journey-page {
+  --honey: #e8a500;
+  --honey-deep: #b57f00;
+  --honey-wash: #fdf3d8;
+  --ink: #17150f;
+  --ink-soft: #5c564a;
+  --ink-faint: #8d8778;
+  --parchment: #f7f4ed;
+  --card: #fffdf8;
+  --edge: #ddd6c5;
+  --pass: #35704a;
+  --pass-wash: #e4f1e8;
+  --fail: #c2410c;
+  --fail-wash: #fdeadf;
+  --alt: #3d6a84;
+  --alt-wash: #e8f1f6;
+  --point-wash: #f5edfa;
+  --point-text: #6b4a80;
+  --point-badge: #ead9f5;
+  --reloc-wash: #e6f3f7;
+  --reloc-text: #2b6276;
+
+  min-height: 100vh;
+  background: var(--parchment);
+  color: var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .journey-page {
+    --honey: #f0b428;
+    --honey-deep: #f5c955;
+    --honey-wash: #332a16;
+    --ink: #f6f2e8;
+    --ink-soft: #b3ab9a;
+    --ink-faint: #8a8373;
+    --parchment: #131209;
+    --card: #1e1b13;
+    --edge: #3a3426;
+    --pass: #6fbd8a;
+    --pass-wash: #17281d;
+    --fail: #e9834c;
+    --fail-wash: #2c1b11;
+    --alt: #84b8d4;
+    --alt-wash: #15222a;
+    --point-wash: #241a2b;
+    --point-text: #c3a8d4;
+    --point-badge: #38274280;
+    --reloc-wash: #12242b;
+    --reloc-text: #9ccbdc;
+  }
+}
+
+:root[data-theme="dark"] .journey-page {
+  --honey: #f0b428;
+  --honey-deep: #f5c955;
+  --honey-wash: #332a16;
+  --ink: #f6f2e8;
+  --ink-soft: #b3ab9a;
+  --ink-faint: #8a8373;
+  --parchment: #131209;
+  --card: #1e1b13;
+  --edge: #3a3426;
+  --pass: #6fbd8a;
+  --pass-wash: #17281d;
+  --fail: #e9834c;
+  --fail-wash: #2c1b11;
+  --alt: #84b8d4;
+  --alt-wash: #15222a;
+  --point-wash: #241a2b;
+  --point-text: #c3a8d4;
+  --point-badge: #38274280;
+  --reloc-wash: #12242b;
+  --reloc-text: #9ccbdc;
+}
+
+/* ---------------- shell ---------------- */
+.board {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  padding: 14px clamp(12px, 1.6vw, 22px);
+}
+
+/* ---------------- header ---------------- */
+.board-head {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 30px);
+  flex-wrap: wrap;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--edge);
+}
+
+.board-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.board-wordmark {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+}
+
+.board-head h1 {
+  flex: 1;
+  margin: 0;
+  font-size: clamp(17px, 2vw, 25px);
+  font-weight: 860;
+  letter-spacing: -.045em;
+}
+
+/* legend — the only reading needed to decode the chart */
+.key {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.k-dot {
+  display: inline-block;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.k-dot.pass { background: var(--pass); }
+.k-dot.fail { background: var(--fail); }
+.k-dot.alt {
+  background: repeating-linear-gradient(90deg, var(--alt) 0 4px, transparent 4px 7px);
+}
+.k-dot.money {
+  background: repeating-linear-gradient(90deg, var(--pass) 0 3px, transparent 3px 6px);
+}
+
+/* ---------------- chart ---------------- */
+.chart-wrap {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 6px 0;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* zone labels */
+.chart .zone {
+  fill: var(--ink-faint);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .18em;
+}
+
+/* --- edges: colour carries the meaning --- */
+/* short stubs from each intake card to the collector line */
+.chart .e-feed {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  opacity: .5;
+}
+
+.chart .e-main {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.4;
+}
+
+.chart .e-pass {
+  fill: none;
+  stroke: var(--pass);
+  stroke-width: 3.4;
+}
+
+.chart .e-fail {
+  fill: none;
+  stroke: var(--fail);
+  stroke-width: 2.6;
+}
+
+.chart .e-alt {
+  fill: none;
+  stroke: var(--alt);
+  stroke-width: 2.4;
+  stroke-dasharray: 7 5;
+}
+
+.chart .e-money {
+  fill: none;
+  stroke: var(--pass);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+  opacity: .75;
+}
+
+.chart .node-fail {
+  fill: var(--fail);
+}
+
+/* --- edge labels --- */
+.chart .lbl-pass {
+  fill: var(--pass);
+  font-size: 15px;
+  font-weight: 880;
+  letter-spacing: .08em;
+  text-anchor: middle;
+}
+
+.chart .lbl-fail {
+  fill: var(--fail);
+  font-size: 15px;
+  font-weight: 880;
+  letter-spacing: .08em;
+}
+
+.chart .lbl-sm {
+  font-size: 11px;
+  font-weight: 750;
+  text-anchor: middle;
+}
+
+.chart .lbl-sm.fail { fill: var(--fail); }
+.chart .lbl-sm.alt { fill: var(--alt); }
+
+/* --- intake container frame --- */
+.chart .intake-frame {
+  fill: var(--card);
+  fill-opacity: 0.38;
+  stroke: var(--edge);
+  stroke-width: 1.8;
+}
+
+#aMain path {
+  fill: var(--ink);
+}
+
+/* --- intake sources --- */
+.chart .src rect {
+  fill: var(--card);
+  stroke: var(--edge);
+  stroke-width: 1.3;
+}
+
+.chart .src-d {
+  fill: var(--honey);
+}
+
+/* the aggressive-marketing block is a strategic argument, not a channel */
+.chart .src.aggro rect {
+  fill: var(--honey-wash);
+  stroke: var(--honey);
+  stroke-width: 1.6;
+  stroke-dasharray: 7 4;
+}
+
+.chart .src.aggro .src-t {
+  fill: var(--honey-deep);
+}
+
+
+.chart .src-t {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.chart .src-s {
+  fill: var(--ink-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+/* --- stage boxes --- */
+/* every stage box looks identical — they are peers in one pipeline */
+.chart .stage rect {
+  fill: var(--honey);
+  stroke: var(--honey-deep);
+  stroke-width: 1.6;
+}
+
+.chart .s-head {
+  fill: #17150f;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -.01em;
+  text-anchor: middle;
+}
+
+/* build-column boxes: one left-aligned text column, no code label */
+.chart .s-title {
+  fill: #17150f;
+  font-size: 13px;
+  font-weight: 870;
+  letter-spacing: .02em;
+  text-anchor: start;
+}
+
+.chart .s-sub {
+  fill: rgba(23, 21, 15, .72);
+  font-size: 10.5px;
+  font-weight: 750;
+  text-anchor: start;
+}
+
+.chart .s-body {
+  fill: rgba(23, 21, 15, .66);
+  font-size: 10.5px;
+  font-weight: 600;
+  text-anchor: start;
+}
+
+.chart .s-name {
+  fill: #17150f;
+  font-size: 15px;
+  font-weight: 820;
+  text-anchor: middle;
+}
+
+.chart .s-meta {
+  fill: rgba(23, 21, 15, .72);
+  font-size: 11px;
+  font-weight: 650;
+  text-anchor: middle;
+}
+
+/* --- the exam diamond --- */
+.chart .gate path {
+  fill: var(--card);
+  stroke: var(--ink);
+  stroke-width: 2.6;
+}
+
+.chart .g-t {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 880;
+  letter-spacing: .08em;
+  text-anchor: middle;
+}
+
+.chart .g-s {
+  fill: var(--ink-faint);
+  font-size: 12px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+/* --- web dev alternative --- */
+.chart .alt-box rect {
+  fill: var(--alt-wash);
+  stroke: var(--alt);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 4;
+}
+
+.chart .a-t {
+  fill: var(--alt);
+  font-size: 15px;
+  font-weight: 870;
+  letter-spacing: -.01em;
+  text-anchor: middle;
+}
+
+.chart .a-s {
+  fill: var(--alt);
+  font-size: 11px;
+  font-weight: 650;
+  text-anchor: middle;
+  opacity: .85;
+}
+
+/* --- relocation support offered at Soft Landing --- */
+.chart .reloc rect {
+  fill: var(--reloc-wash);
+  stroke: #1d6f8b;
+  stroke-width: 1.8;
+}
+
+.chart .e-reloc {
+  fill: none;
+  stroke: var(--pass);
+  stroke-width: 2.2;
+  stroke-dasharray: 7 5;
+}
+
+.chart .rl-c {
+  fill: var(--pass);
+  font-size: 10.5px;
+  font-weight: 780;
+  text-anchor: start;
+}
+
+.chart .rl-t {
+  fill: #1d6f8b;
+  font-size: 11px;
+  font-weight: 880;
+  letter-spacing: .07em;
+  text-anchor: start;
+}
+
+.chart .rl-s {
+  fill: var(--reloc-text);
+  font-size: 10.5px;
+  font-weight: 650;
+  text-anchor: start;
+}
+
+/* --- point b: where all three build stages lead --- */
+.chart .e-point {
+  fill: none;
+  stroke: #7a3f9d;
+  stroke-width: 2.4;
+}
+
+.chart .point-b rect {
+  fill: var(--point-wash);
+  stroke: #7a3f9d;
+  stroke-width: 2.2;
+}
+
+.chart .pb-title {
+  fill: #7a3f9d;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  text-anchor: middle;
+}
+
+.chart .pb-sub {
+  fill: #7a3f9d;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-anchor: middle;
+}
+
+.chart .pb-badge {
+  fill: var(--point-badge);
+  stroke: #7a3f9d;
+  stroke-width: 1.6;
+}
+
+.chart .pb-guar {
+  fill: #7a3f9d;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-anchor: middle;
+}
+
+.chart .pb-guar-s {
+  fill: #7a3f9d;
+  font-size: 10.5px;
+  font-weight: 750;
+  text-anchor: middle;
+}
+
+.chart .pb-body {
+  fill: var(--point-text);
+  font-size: 11px;
+  font-weight: 650;
+  text-anchor: middle;
+}
+
+/* --- refund bubble: a reward that pops out of the exam, not a path back --- */
+.chart .money-tag rect {
+  fill: var(--pass-wash);
+  stroke: var(--pass);
+  stroke-width: 1.6;
+}
+
+.chart .money-bubble {
+  fill: var(--pass-wash);
+  stroke: var(--pass);
+  stroke-width: 1.6;
+}
+
+.chart .money-amt {
+  fill: var(--pass);
+  font-size: 12.5px;
+  font-weight: 850;
+  text-anchor: middle;
+}
+
+.chart .money-sub {
+  fill: var(--pass);
+  font-size: 10px;
+  font-weight: 650;
+  text-anchor: middle;
+  opacity: .8;
+}
+
+
+/* ---------------- toolbar ---------------- */
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: border-color .16s ease, color .16s ease;
+}
+
+.tool:hover,
+.tool:focus-visible {
+  border-color: var(--honey);
+  color: var(--ink);
+}
+
+.tool.active {
+  border-color: var(--honey);
+  background: var(--honey);
+  color: #17150f;
+}
+
+.tool.icon {
+  padding: 6px 8px;
+}
+
+.tool-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 8px;
+  border-left: 1px solid var(--edge);
+}
+
+.zoom-val {
+  min-width: 42px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* ---------------- edit mode ---------------- */
+.edit-hint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 8px 0 0;
+  padding: 7px 12px;
+  border: 1px solid var(--honey);
+  border-radius: 8px;
+  background: var(--honey-wash);
+  color: var(--ink-soft);
+  font-size: 11.5px;
+}
+
+.edit-hint[hidden] {
+  display: none;
+}
+
+.edit-hint i {
+  color: var(--honey-deep);
+}
+
+.edit-hint kbd {
+  padding: 1px 5px;
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  background: var(--card);
+  font-size: 10px;
+  font-family: inherit;
+}
+
+.link-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--honey-deep);
+  font: inherit;
+  font-weight: 750;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* editable text gets a visible target only in edit mode */
+.chart.editing [data-edit] {
+  cursor: text;
+}
+
+.chart.editing [data-edit]:hover,
+.chart.editing [data-edit]:focus-visible {
+  outline: none;
+  paint-order: stroke;
+  stroke: var(--honey);
+  stroke-width: 7px;
+  stroke-linejoin: round;
+}
+
+.chart.pannable {
+  cursor: grab;
+}
+
+.chart.grabbing {
+  cursor: grabbing;
+}
+
+/* the inline input that replaces a text node while typing */
+.text-input {
+  position: absolute;
+  z-index: 5;
+  padding: 1px 5px;
+  border: 2px solid var(--honey);
+  border-radius: 5px;
+  background: var(--card);
+  color: var(--ink);
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.text-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(232, 165, 0, .25);
+}
+
+/* ---------------- responsive ---------------- */
+@media (max-width: 1000px) {
+  .board {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .chart-wrap {
+    overflow-x: auto;
+  }
+
+  .chart {
+    min-width: 940px;
+    height: auto;
+  }
+
+  .board-head h1 {
+    flex: 1 1 100%;
+    order: -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
