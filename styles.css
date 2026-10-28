@@ -131,6 +131,35 @@ a {
   box-shadow: 0 0 0 3px rgba(71, 199, 120, .14);
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1px solid rgba(22, 22, 22, .08);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, .7);
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(12px);
+}
+
+.logout-btn:hover {
+  background: #ffffff;
+  color: #d32f2f;
+  border-color: rgba(211, 47, 47, 0.2);
+  transform: translateY(-1px);
+}
+
 .eyebrow,
 .card-kicker {
   margin: 0 0 14px;
